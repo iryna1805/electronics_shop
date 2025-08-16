@@ -1,0 +1,59 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}Головна{% endblock %}
+
+{% block content %}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="alert alert-info text-center" role="alert">
+            <h4 class="alert-heading">Знижки до 50%!</h4>
+            <p>Не пропустіть акційні пропозиції на побутову техніку та електроніку.</p>
+            <hr>
+            <p class="mb-0">Тільки до кінця місяця.</p>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h2>Популярні категорії</h2>
+        <div class="d-flex justify-content-around flex-wrap">
+            <div class="card mb-3" style="width: 18rem;">
+                <img src="/static/images/tv.png" class="card-img-top" alt="Телевізори">
+                <div class="card-body">
+                    <h5 class="card-title">Телевізори</h5>
+                    <p class="card-text">Вибір найкращих моделей за доступними цінами.</p>
+                </div>
+            </div>
+            <div class="card mb-3" style="width: 18rem;">
+                <img src="/static/images/washer_dryer.webp" class="card-img-top" alt="Пральні машини">
+                <div class="card-body">
+                    <h5 class="card-title">Пральні машини</h5>
+                    <p class="card-text">Енергоефективні та надійні моделі для вашого дому.</p>
+                </div>
+            </div>
+            <div class="card mb-3" style="width: 18rem;">
+                <img src="/static/images/phone.webp" class="card-img-top" alt="Смартфони">
+                <div class="card-body">
+                    <h5 class="card-title">Смартфони</h5>
+                    <p class="card-text">Останні моделі від провідних виробників.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h2>Спеціальні пропозиції</h2>
+        <div class="alert alert-warning" role="alert">
+            <h4 class="alert-heading">Чорна п'ятниця!</h4>
+            <p>Знижки до 70% на обрані товари. Не пропустіть!</p>
+            <hr>
+            <p class="mb-0">Акція діє до кінця тижня.</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'shop/base.html' %}
+
+{% block content %}
+<h1>{{ category.name }}</h1>
+<ul>
+    {% for product in products %}
+    <li>
+        <a href="{% url 'shop_product_detail' product.id %}">{{ product.name }}</a>
+        - {{ product.price }} грн
+    </li>
+    {% empty %}
+    <li>Немає товарів у цій категорії.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'shop_index' %}">Повернутись на головну</a>
+{% endblock %}
