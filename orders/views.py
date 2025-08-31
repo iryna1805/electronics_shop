@@ -10,13 +10,15 @@ def cart(request):
     total = 0
     for product_id, quantity in cart.items():
         product = get_object_or_404(Product, id=product_id)
-        total += product.price * quantity
-        products.append({'product': product, 'quantity': quantity})
+        subtotal = product.price * quantity
+        total += subtotal
+        products.append({'product': product, 'quantity': quantity, 'subtotal': subtotal})
     return render(request, 'orders/cart.html', {'products': products, 'total': total})
 
 def add_to_cart(request, product_id):
     cart = request.session.get('cart', {})
-    cart[str(product_id)] = cart.get(str(product_id), 0) + 1
+    quantity = int(request.POST.get('quantity', 1))
+    cart[str(product_id)] = cart.get(str(product_id), 0) + quantity
     request.session['cart'] = cart
     return redirect('cart')
 
@@ -27,24 +29,49 @@ def remove_from_cart(request, product_id):
         request.session['cart'] = cart
     return redirect('cart')
 
+def update_cart(request, product_id):
+    cart = request.session.get('cart', {})
+    if str(product_id) in cart:
+        action = request.POST.get("action")
+        if action == "increase":
+            cart[str(product_id)] += 1
+        elif action == "decrease" and cart[str(product_id)] > 1:
+            cart[str(product_id)] -= 1
+        request.session['cart'] = cart
+    return redirect('cart')
+
+
 # Оформлення замовлення
 def checkout(request):
     cart = request.session.get('cart', {})
-    if not cart:
-        return redirect('index')
+    
+    cart_products = []
+    total = 0
+    for product_id, quantity in cart.items():
+        product = get_object_or_404(Product, id=int(product_id))  
+        subtotal = product.price * quantity
+        total += subtotal
+        cart_products.append({
+            'product': product,
+            'quantity': quantity,
+            'subtotal': subtotal
+        })
+
+    if not cart_products: 
+        return redirect('cart')
     
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
             order = form.save()
-            for product_id, quantity in cart.items():
-                product = get_object_or_404(Product, id=product_id)
-                OrderItem.objects.create(order=order, product=product, quantity=quantity)
+            for item in cart_products:
+                OrderItem.objects.create(order=order, product=item['product'], quantity=item['quantity'])
             request.session['cart'] = {}  # очистка кошика
-            return render(request, 'orders/checkout_success.html', {'order': order})
+            return redirect('cart')
     else:
-        form = OrderForm()
-    return render(request, 'orders/checkout.html', {'form': form})
+        form = OrderForm()  # форма для GET
+
+    return render(request, 'orders/checkout.html', {'form': form, 'cart_products': cart_products, 'total': total})
 
 # Чат по замовленню
 def order_chat(request, order_id):
@@ -60,4 +87,5 @@ def order_chat(request, order_id):
             return redirect('order_chat', order_id=order.id)
     else:
         form = MessageForm()
-    return render(request, 'orders/order_chat.html', {'order': order, 'messages': messages, 'form': form})
+    return render(request, 'chat/chat.html', {'order': order, 'messages': messages, 'form': form})
+

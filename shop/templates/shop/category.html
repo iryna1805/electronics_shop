@@ -2,15 +2,25 @@
 
 {% block content %}
 <h1>{{ category.name }}</h1>
-<ul>
+<div class="row">
     {% for product in products %}
-    <li>
-        <a href="{% url 'shop_product_detail' product.id %}">{{ product.name }}</a>
-        - {{ product.price }} грн
-    </li>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <img src="{{ product.image.url }}" class="card-img-top product-img" alt="{{ product.name }}">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text">{{ product.price }} грн</p>
+                <a href="{% url 'shop_product_detail' product.id %}" class="btn btn-primary mt-auto mb-2">Детальніше</a>
+                <form method="post" action="{% url 'add_to_cart' product.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success">Додати в кошик</button>
+                </form>
+            </div>
+        </div>
+    </div>
     {% empty %}
-    <li>Немає товарів у цій категорії.</li>
+    <p>Немає товарів у цій категорії.</p>
     {% endfor %}
-</ul>
-<a href="{% url 'shop_index' %}">Повернутись на головну</a>
+</div>
+<a href="{% url 'shop_index' %}" class="btn btn-secondary mt-3">Повернутись на головну</a>
 {% endblock %}

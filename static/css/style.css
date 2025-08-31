@@ -1,0 +1,42 @@
+/* Фото у списках */
+.product-img {
+    max-height: 180px;
+    object-fit: contain;
+}
+
+/* Фото на детальній сторінці */
+.product-detail-img {
+    max-height: 350px;
+    object-fit: contain;
+}
+
+/* Кнопки */
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}

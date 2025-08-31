@@ -1,16 +1,29 @@
 {% extends 'shop/base.html' %}
 
 {% block content %}
-<h1>{{ product.name }}</h1>
-<p>Ціна: {{ product.price }} грн</p>
-<p>{{ product.description }}</p>
-<p>Кількість на складі: {{ product.stock }}</p>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6 text-center">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid product-detail-img shadow-sm rounded">
+        </div>
+        <div class="col-md-6">
+            <h1>{{ product.name }}</h1>
+            <h4 class="text-success">{{ product.price }} грн</h4>
+            <p class="text-muted">Кількість на складі: {{ product.stock }}</p>
+            <p>{{ product.description }}</p>
 
-<form method="post" action="{% url 'add_to_cart' product.id %}">
-    {% csrf_token %}
-    <label>Кількість: <input type="number" name="quantity" value="1" min="1"></label>
-    <button type="submit">Додати до кошика</button>
-</form>
+            <form method="post" action="{% url 'add_to_cart' product.id %}">
+                {% csrf_token %}
+                <div class="input-group mb-3" style="max-width: 200px;">
+                    <input type="number" name="quantity" value="1" min="1" class="form-control">
+                    <button type="submit" class="btn btn-success">Додати до кошика</button>
+                </div>
+            </form>
 
-<a href="{% url 'shop_index' %}">Повернутись на головну</a>
+            <a href="{% url 'shop_category_detail' product.category.id %}" class="btn btn-secondary">Назад до категорії</a>
+            <a href="{% url 'shop_index' %}" class="btn btn-primary">На головну</a>
+        </div>
+    </div>
+</div>
 {% endblock %}
+

@@ -1,0 +1,46 @@
+{% extends 'shop/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Оформлення замовлення</h1>
+
+    <div class="row">
+        <!-- Форма замовлення -->
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title mb-3">Ваші дані</h4>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-success">Підтвердити замовлення</button>
+                        <a href="{% url 'cart' %}" class="btn btn-secondary">Назад до кошика</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Підсумок кошика -->
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title mb-3">Ваш кошик</h4>
+                    {% if cart_products %}
+                        <ul class="list-group mb-3">
+                            {% for item in cart_products %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ item.product.name }} (x{{ item.quantity }})
+                                <span>{{ item.subtotal|floatformat:2 }} грн</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        <p class="fw-bold">Разом: {{ total|floatformat:2 }} грн</p>
+                    {% else %}
+                        <p>Кошик порожній.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,5 +1,56 @@
-{% extends "base.html" %}
+{% extends 'shop/base.html' %}
+
+{% block title %}Ваш кошик{% endblock %}
 
 {% block content %}
-<h1>Корзина порожня</h1>
+<div class="container mt-4">
+    <h1 class="mb-4">Ваш кошик</h1>
+
+    {% if products %}
+    <div class="row">
+        {% for item in products %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="row g-0">
+                    <!-- Фото товару -->
+                    <div class="col-md-4 text-center">
+                        <img src="{{ item.product.image.url }}" class="img-fluid rounded-start product-img" alt="{{ item.product.name }}">
+                    </div>
+
+                    <!-- Інфо -->
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.product.name }}</h5>
+                            <p class="card-text text-success">{{ item.product.price }} грн</p>
+
+                            <!-- Зміна кількості -->
+                            <form method="post" action="{% url 'update_cart' item.product.id %}" class="d-flex align-items-center">
+                                {% csrf_token %}
+                                <div class="input-group" style="max-width: 150px;">
+                                    <button type="submit" name="action" value="decrease" class="btn btn-outline-secondary">-</button>
+                                    <input type="text" name="quantity" value="{{ item.quantity }}" class="form-control text-center" readonly>
+                                    <button type="submit" name="action" value="increase" class="btn btn-outline-secondary">+</button>
+                                </div>
+                            </form>
+
+                            <p class="mt-2">Сума: <strong>{{ item.subtotal }} грн</strong></p>
+
+                            <a href="{% url 'remove_from_cart' item.product.id %}" class="btn btn-danger btn-sm mt-2">Видалити</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Загальна сума -->
+    <div class="text-end mt-4">
+        <h4>Разом: {{ total }} грн</h4>
+        <a href="{% url 'checkout' %}" class="btn btn-primary">Оформити замовлення</a>
+    </div>
+    {% else %}
+    <p>Кошик порожній</p>
+    {% endif %}
+</div>
 {% endblock %}
